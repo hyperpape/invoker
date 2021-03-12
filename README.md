@@ -1,3 +1,6 @@
+![Badge](https://travis-ci.com/hyperpape/Invoker.svg?branch=main)
+![Badge](https://www.repostatus.org/badges/latest/wip.svg)
+
 # Invoker
 
 Supports constructing instances of arbitrary classes using their constructors and invoking methods on them. 
