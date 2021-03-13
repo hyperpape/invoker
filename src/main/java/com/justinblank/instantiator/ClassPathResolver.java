@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Resolve class constructors by loading the class and using reflection.
  */
-class ClassPathResolver implements ClassCreationResolver {
+public class ClassPathResolver implements ClassCreationResolver {
 
     private Optional<Constructor<?>> getNoArgConstructor(Class<?> targetClass) {
         for (var constructor : getPrioritizedConstructors(targetClass)) {
