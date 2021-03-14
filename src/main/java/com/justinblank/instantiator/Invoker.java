@@ -60,7 +60,7 @@ public class Invoker {
             try {
                 if (t.isResolved()) {
                     if (t.typeSrc.sourceKind() == SourceKind.Constructor) {
-                        return Optional.of(instantiateViaConstructor(t, provided));
+                        return instantiateViaConstructor(t, provided);
                     }
                     else if (t.typeSrc.sourceKind() == SourceKind.Generatable) {
                         return Optional.of(t.typeSrc.supplier().get());
@@ -80,7 +80,7 @@ public class Invoker {
         });
     }
 
-    private Object instantiateViaConstructor(TypeTree t, List<TypeSrc> provided) throws Exception {
+    private Optional<Object> instantiateViaConstructor(TypeTree t, List<TypeSrc> provided) throws Exception {
         var arguments = new Object[t.children.size()];
         for (var i = 0; i < t.children.size(); i++) {
             var next = instantiate(t.children.get(i).type.typeString, provided);
