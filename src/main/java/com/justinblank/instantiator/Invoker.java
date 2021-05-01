@@ -33,7 +33,11 @@ public class Invoker {
             if (argumentObject.isEmpty()) {
                 return false;
             }
-            argumentsObjects.add(argumentObject.get());
+            var instantiatedArgument = instantiate(argumentObject.get().type.typeString, provided);
+            if (instantiatedArgument.isEmpty()) {
+                return false;
+            }
+            argumentsObjects.add(instantiatedArgument.get());
         }
         method.invoke(recipient.get(), argumentsObjects.toArray(new Object[0]));
         return true;

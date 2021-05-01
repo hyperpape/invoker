@@ -3,7 +3,7 @@ package com.justinblank.instantiator;
 import java.util.Objects;
 import java.util.Set;
 
-class Type {
+public class Type {
 
     public static final Type STRING = new Type("java.lang.String");
     public static final Type INT = new Type("java.lang.Integer");

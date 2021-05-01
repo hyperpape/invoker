@@ -63,4 +63,10 @@ public class InvokerTest {
         var invoker = new Invoker(new ClassPathResolver());
         assertTrue(invoker.invoke(String.class.getCanonicalName(), "equals", List.of(Object.class), DefaultTypes.DEFAULT_TYPES));
     }
+
+    @Test
+    public void testInvokerCodePoint() throws Exception {
+        var invoker = new Invoker(new ClassPathResolver());
+        assertTrue(invoker.invoke(String.class.getCanonicalName(), "compareTo", List.of(String.class), DefaultTypes.DEFAULT_TYPES));
+    }
 }

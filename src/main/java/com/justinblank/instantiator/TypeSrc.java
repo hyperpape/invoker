@@ -23,11 +23,11 @@ public class TypeSrc {
         this.s = supplier;
     }
 
-    static TypeSrc fromObject(Type type, Object o) {
+    public static TypeSrc fromObject(Type type, Object o) {
         return new TypeSrc(type, SourceKind.Provided, List.of(), o, null);
     }
 
-    static TypeSrc fromSupplier(Type type, Supplier<Object> s) {
+    public static TypeSrc fromSupplier(Type type, Supplier<Object> s) {
         return new TypeSrc(type, SourceKind.Generatable, List.of(), null, s);
     }
 
