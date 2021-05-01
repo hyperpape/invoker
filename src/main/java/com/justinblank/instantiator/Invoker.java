@@ -9,13 +9,14 @@ import java.util.*;
 public class Invoker {
 
     private final ClassCreationResolver resolver;
+    private final ValueSearcher searcher;
 
     public Invoker(ClassCreationResolver resolver) {
         this.resolver = resolver;
+        searcher = new ValueSearcher(resolver);
     }
 
     public boolean invoke(String className, String methodName, List<Class<?>> arguments, List<TypeSrc> provided) throws Exception {
-        var searcher = new ValueSearcher(resolver);
         if (!canResolveMethod(searcher, className, arguments, provided)) {
             return false;
         }
