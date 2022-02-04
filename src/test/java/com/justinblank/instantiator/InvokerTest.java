@@ -61,12 +61,12 @@ public class InvokerTest {
     @Test
     public void testInvoker() throws Exception {
         var invoker = new Invoker(new ClassPathResolver());
-        assertTrue(invoker.invoke(String.class.getCanonicalName(), "equals", List.of(Object.class), DefaultTypes.DEFAULT_TYPES));
+        assertThat(invoker.invoke(String.class.getCanonicalName(), "equals", List.of(Object.class), DefaultTypes.DEFAULT_TYPES)).isNotEmpty();
     }
 
     @Test
     public void testInvokerCodePoint() throws Exception {
         var invoker = new Invoker(new ClassPathResolver());
-        assertTrue(invoker.invoke(String.class.getCanonicalName(), "compareTo", List.of(String.class), DefaultTypes.DEFAULT_TYPES));
+        assertThat(invoker.invoke(String.class.getCanonicalName(), "compareTo", List.of(String.class), DefaultTypes.DEFAULT_TYPES)).isNotEmpty();
     }
 }

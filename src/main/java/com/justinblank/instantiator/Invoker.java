@@ -16,31 +16,41 @@ public class Invoker {
         searcher = new ValueSearcher(resolver);
     }
 
-    public boolean invoke(String className, String methodName, List<Class<?>> arguments, List<TypeSrc> provided) throws Exception {
+    public Optional<Invocation> invoke(String className, String methodName, List<Class<?>> arguments, List<TypeSrc> provided) throws Exception {
         if (!canResolveMethod(searcher, className, arguments, provided)) {
-            return false;
+            return Optional.empty();
         }
 
         var c = Class.forName(className);
         var method = c.getMethod(methodName, arguments.toArray(new Class[0]));
         var recipient = instantiate(className, provided);
         if (recipient.isEmpty()) {
-            return false;
+            return Optional.empty();
         }
         var argumentsObjects = new ArrayList<>();
         for (var argClass : arguments) {
             var argumentObject = searcher.resolve(new Type(argClass.getCanonicalName()), provided);
             if (argumentObject.isEmpty()) {
-                return false;
+                return Optional.empty();
             }
             var instantiatedArgument = instantiate(argumentObject.get().type.typeString, provided);
             if (instantiatedArgument.isEmpty()) {
-                return false;
+                return Optional.empty();
             }
             argumentsObjects.add(instantiatedArgument.get());
         }
-        method.invoke(recipient.get(), argumentsObjects.toArray(new Object[0]));
-        return true;
+        try {
+            var obj = method.invoke(recipient.get(), argumentsObjects.toArray(new Object[0]));
+            return Optional.of(Invocation.success(recipient.get(), argumentsObjects, obj));
+        }
+        // TODO: If our method actually threw a ReflectiveOperationException, we can't detect it. With more thought
+        // about proper use of reflection, we might remove this check.
+        catch (ReflectiveOperationException e) {
+            throw e;
+        }
+        catch (Exception e) {
+            return Optional.of(Invocation.exception(recipient.get(), argumentsObjects, e));
+        }
     }
 
     private boolean canResolveMethod(ValueSearcher searcher, String className, List<Class<?>> arguments, List<TypeSrc> provided) {
