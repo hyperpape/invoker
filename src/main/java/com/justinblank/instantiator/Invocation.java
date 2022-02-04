@@ -9,6 +9,16 @@ public class Invocation {
     public final Object result;
     public final Exception exception;
 
+    @Override
+    public String toString() {
+        return "Invocation{" +
+                "instance=" + instance +
+                ", arguments=" + arguments +
+                ", result=" + result +
+                ", exception=" + exception +
+                '}';
+    }
+
     private Invocation(Object o, List<Object> args, Object result, Exception e) {
         this.instance = o;
         this.arguments = args;
