@@ -1,6 +1,5 @@
 package com.justinblank.instantiator;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

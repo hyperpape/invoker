@@ -3,9 +3,6 @@ package com.justinblank.instantiator;
 import java.lang.reflect.Constructor;
 import java.util.*;
 
-/**
- *
- */
 public class Invoker {
 
     private final ClassCreationResolver resolver;
@@ -16,7 +13,16 @@ public class Invoker {
         searcher = new ValueSearcher(resolver);
     }
 
-    public Optional<Invocation> invoke(String className, String methodName, List<Class<?>> arguments, List<TypeSrc> provided) throws Exception {
+    /**
+     * Instantiate an instance of the specified class and invoke the named method if possible.
+     * @param className the fully qualified class name
+     * @param methodName the name of the method
+     * @param arguments the classes of the methods arguments
+     * @param provided a provided set of types that can be constructed
+     * @return an optional Invocation, or empty if it was not possible to invoke the method
+     * @throws ReflectiveOperationException if the method could not be invoked
+     */
+    public Optional<Invocation> invoke(String className, String methodName, List<Class<?>> arguments, List<TypeSrc> provided) throws ReflectiveOperationException {
         if (!canResolveMethod(searcher, className, arguments, provided)) {
             return Optional.empty();
         }
@@ -68,6 +74,12 @@ public class Invoker {
         }).orElse(Boolean.FALSE);
     }
 
+    /**
+     * Instantiate an instance of the given object, using any available constructors
+     * @param className the fully qualified class name of the desired type
+     * @param provided the list of ways to instantiate particular types provided
+     * @return an instance of the object if it can be instantiated, otherwise empty
+     */
     public Optional<Object> instantiate(String className, List<TypeSrc> provided) {
         var searcher = new ValueSearcher(resolver);
         var typeTree = searcher.resolve(new Type(className), provided);
